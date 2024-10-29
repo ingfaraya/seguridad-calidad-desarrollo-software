@@ -1,10 +1,17 @@
+<!-- error.html -->
+
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
     <title>Error</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <h1>La página solicitada no fue encontrada.</h1>
-    <a th:href="@{/}">Volver al inicio</a>
+    <div class="container">
+        <h1>Error 404</h1>
+        <p>La página solicitada no fue encontrada.</p>
+        <a href="/home">Volver al inicio</a>
+    </div>
 </body>
 </html>

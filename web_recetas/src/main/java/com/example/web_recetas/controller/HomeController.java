@@ -1,4 +1,4 @@
-package com.example.web_recetas;
+package com.example.web_recetas.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,13 +12,16 @@ public class HomeController {
 
     @GetMapping("/home")
     public String home(Model model) {
-        // Recetas populares estáticas
         model.addAttribute("recetasPopulares", getRecetasPopulares());
         model.addAttribute("banners", getBanners());
         return "home";
     }
 
-    // Métodos estáticos para obtener recetas y banners
+    @GetMapping("/buscar")
+    public String buscarRecetas() {
+        return "buscar";
+    }
+
     private List<String> getRecetasPopulares() {
         return Arrays.asList("Receta 1", "Receta 2", "Receta 3");
     }

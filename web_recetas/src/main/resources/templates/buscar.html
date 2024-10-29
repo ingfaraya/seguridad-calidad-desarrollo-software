@@ -1,14 +1,19 @@
+<!-- buscar.html -->
+
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
     <title>Buscar Recetas</title>
-    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <h1>Buscar Recetas</h1>
-    <form>
-        <input type="text" placeholder="Buscar por nombre de receta">
-        <input type="submit" value="Buscar" class="btn">
-    </form>
+    <div class="container">
+        <h1>Buscar Recetas</h1>
+        <form action="/recetas" method="get">
+            <input type="text" name="query" placeholder="Buscar receta">
+            <button type="submit">Buscar</button>
+        </form>
+    </div>
 </body>
 </html>
