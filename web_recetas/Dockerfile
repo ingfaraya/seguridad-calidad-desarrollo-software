@@ -1,4 +1,4 @@
-# Dockerfile para el servicio de usuarios
+# Dockerfile para el servicio de web_recetass
 
 # Etapa de construcción
 FROM eclipse-temurin:22-jdk AS buildstage
@@ -18,10 +18,10 @@ RUN mvn clean package
 # Etapa de producción
 FROM eclipse-temurin:22-jdk
 
-COPY --from=buildstage /app/target/usuario-0.0.1-SNAPSHOT.jar /app/usuario.jar
+COPY --from=buildstage /app/target/web_recetas-0.0.1-SNAPSHOT.jar /app/web_recetas.jar
 COPY Wallet_LEGX51JUNINIVTKL /app/oracle_wallet
 
 ENV TNS_ADMIN=/app/oracle_wallet
 EXPOSE 8081
 
-ENTRYPOINT [ "java", "-jar", "/app/usuario.jar" ]
+ENTRYPOINT [ "java", "-jar", "/app/web_recetas.jar" ]

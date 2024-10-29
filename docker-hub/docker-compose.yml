@@ -1,19 +1,9 @@
 version: '1'
 services:
-  microservicio-productos:
+  microservicio-web-recetas:
     image: ingfaraya/desarrollo-full-stack-3-sumativa1-productos:latest
     ports:
       - "8080:8080"
-    environment:
-      - spring.datasource.url=jdbc:oracle:thin:@legx51juninivtkl_medium?TNS_ADMIN=/app/oracle_wallet/
-      - spring.datasource.username=admin
-      - spring.datasource.password=Octubre$2024
-    restart: always
-  
-  microservicio-usuarios:
-    image: ingfaraya/desarrollo-full-stack-3-sumativa1-usuarios:latest
-    ports:
-      - "8081:8080"
     environment:
       - spring.datasource.url=jdbc:oracle:thin:@legx51juninivtkl_medium?TNS_ADMIN=/app/oracle_wallet/
       - spring.datasource.username=admin
