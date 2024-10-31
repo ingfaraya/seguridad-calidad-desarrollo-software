@@ -1,32 +1,32 @@
 package com.example.web_recetas.controller;
 
+import com.example.web_recetas.model.Receta;
+import com.example.web_recetas.repository.RecetaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.Arrays;
 
 @Controller
+@RequestMapping("/home")
 public class HomeController {
 
-    @GetMapping("/home")
+    @Autowired
+    private RecetaRepository recetaRepository;
+
+    @GetMapping
     public String home(Model model) {
-        model.addAttribute("recetasPopulares", getRecetasPopulares());
-        model.addAttribute("banners", getBanners());
-        return "home";
+        model.addAttribute("message", "Bienvenido a Web Recetas");
+        return "home"; // Carga la plantilla 'home.html' desde la carpeta 'auth'
     }
 
-    @GetMapping("/buscar")
-    public String buscarRecetas() {
-        return "buscar";
-    }
-
-    private List<String> getRecetasPopulares() {
-        return Arrays.asList("Receta 1", "Receta 2", "Receta 3");
-    }
-
-    private List<String> getBanners() {
-        return Arrays.asList("Banner 1", "Banner 2");
+    @GetMapping("/recetas")
+    public String buscarRecetas(Model model) {
+        List<Receta> recetas = recetaRepository.findAll();
+        model.addAttribute("recetas", recetas);
+        return "receta/recetas"; // Carga la plantilla 'recetas.html' desde la carpeta 'receta'
     }
 }

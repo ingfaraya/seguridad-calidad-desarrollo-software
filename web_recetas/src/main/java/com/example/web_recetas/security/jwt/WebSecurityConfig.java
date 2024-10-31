@@ -11,6 +11,9 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 
 @Configuration
 @EnableWebSecurity
@@ -22,20 +25,28 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/", "/home", "/login", "/css/**", "/error", "/api/recetas/**", "/auth/**", "/api/usuarios/**").permitAll()
-                .anyRequest().authenticated()
-            )
-            .formLogin((form) -> form
-                .loginPage("/login")
-                .defaultSuccessUrl("/home", true)
-                .permitAll()
-            )
-            .logout((logout) -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout")
-                .permitAll());
+                .csrf(csrf -> csrf.disable())
+                .headers(headers -> headers
+                                .contentSecurityPolicy(csp -> csp
+                                                .policyDirectives("default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; frame-ancestors 'none'; form-action 'self';")
+                                )
+                )
+                .authorizeHttpRequests((requests) -> requests
+                                .requestMatchers("/", "/home/**", "/login", "/css/**", "/js/**", "/error", "/api/recetas/**", "/auth/**", "/api/usuarios/**").permitAll()
+                                .anyRequest().authenticated()
+                )
+                .exceptionHandling(handling -> handling
+                        .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED)))
+                .formLogin((form) -> form
+                                .loginPage("/login")
+                                .defaultSuccessUrl("/home", true)
+                                .permitAll()
+                )
+                .logout((logout) -> logout
+                                .logoutUrl("/logout")
+                                .logoutSuccessUrl("/login?logout")
+                                .permitAll()
+                );
         return http.build();
     }
 
@@ -47,5 +58,12 @@ public class WebSecurityConfig {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(new EncoderConfig().passwordEncoder());
+    }
+
+    @Bean
+    public CookieSerializer cookieSerializer() {
+        DefaultCookieSerializer cookieSerializer = new DefaultCookieSerializer();
+        cookieSerializer.setSameSite("Lax"); // O "Strict" si es necesario para mayor seguridad.
+        return cookieSerializer;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.web_recetas.config;
+package com.example.web_recetas.security.jwt.util;
 
 import com.example.web_recetas.model.Usuario;
 import com.example.web_recetas.repository.UsuarioRepository;

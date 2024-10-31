@@ -1,7 +1,7 @@
 version: '1'
 services:
   microservicio-web-recetas:
-    image: ingfaraya/seguridad-calidad-software-formativa2-recetas:latest
+    image: ingfaraya/seguridad-calidad-software-sumativa1-recetas:latest
     ports:
       - "8080:8080"
     environment:
