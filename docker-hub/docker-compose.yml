@@ -1,14 +1,39 @@
 version: '1'
 services:
-  microservicio-web-recetas:
-    image: ingfaraya/seguridad-calidad-software-sumativa1-recetas:latest
+  microservicio-tokens:
+    container_name: microservicio-tokens
+    image: ingfaraya/seguridad-calidad-software-formativa3-tokens:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - spring.datasource.url=jdbc:oracle:thin:@legx51juninivtkl_medium?TNS_ADMIN=/app/oracle_wallet/
+      - spring.datasource.username=admin
+      - spring.datasource.password=Octubre$2024
+    networks:
+      - app-network
+    restart: on-failure
+  
+  microservicio-libros:
+    container_name: microservicio-libros
+    image: ingfaraya/seguridad-calidad-software-formativa3-libros:latest
     ports:
       - "8081:8081"
     environment:
       - spring.datasource.url=jdbc:oracle:thin:@legx51juninivtkl_medium?TNS_ADMIN=/app/oracle_wallet/
       - spring.datasource.username=admin
       - spring.datasource.password=Octubre$2024
-    restart: always
+    networks:
+      - app-network
+    restart: on-failure
+  
+  frontend-libros:
+    container_name: frontend-libros
+    image: ingfaraya/seguridad-calidad-software-formativa3-frontend:latest
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+    restart: on-failure
 
   sonarqube:
     image: sonarqube:latest
@@ -22,6 +47,8 @@ services:
     depends_on:
       - db
     restart: always
+    networks:
+      - app-network
 
   db:
     image: postgres:latest
@@ -33,6 +60,37 @@ services:
     volumes:
       - sonarqube_db_data:/var/lib/postgresql/data
     restart: always
+    networks:
+      - app-network
+
+  owasp-zap:
+    image: zaproxy/zap-stable:2.15.0
+    container_name: owasp_zap
+    entrypoint:
+      - sh
+      - -c
+      - |
+        while ! curl -s http://frontend-libros/login > /dev/null && curl -s http://localhost:8080/auth/token > /dev/null && curl -s http://localhost:8081/api/libros > /dev/null; do
+          echo 'Esperando a que microservicio-web-recetas esté listo...'
+          sleep 5
+        done
+        zap.sh -cmd -quickurl http://frontend-libros/login -quickprogress -quickout /zap/wrk/report-web-recetas.html
+        zap.sh -cmd -quickurl http://microservicio-tokens:8080/auth/token -quickprogress -quickout /zap/wrk/report-microservicio-tokens.html
+        zap.sh -cmd -quickurl http://microservicio-libros:8081/api/libros -quickprogress -quickout /zap/wrk/report-microservicio-libros.html
+    volumes:
+      - ./zap-reports:/zap/wrk
+    depends_on:
+      - frontend-libros
+    networks:
+      - app-network
+    restart: on-failure
 
 volumes:
   sonarqube_db_data:
+
+networks:
+  app-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.22.0.0/16
