@@ -7,7 +7,7 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY = "Juan-Gabriel";
+    private final String SECRET_KEY = System.getenv("jwt.secret");
 
     public String generateToken(String username) {
         return Jwts.builder()

@@ -25,6 +25,19 @@ services:
     networks:
       - app-network
     restart: on-failure
+
+  microservicio-recetas:
+    container_name: microservicio-recetas
+    image: ingfaraya/seguridad-calidad-software-formativa3-recetas:latest
+    ports:
+      - "8082:8082"
+    environment:
+      - spring.datasource.url=jdbc:oracle:thin:@legx51juninivtkl_medium?TNS_ADMIN=/app/oracle_wallet/
+      - spring.datasource.username=admin
+      - spring.datasource.password=Octubre$2024
+    networks:
+      - app-network
+    restart: on-failure
   
   frontend-libros:
     container_name: frontend-libros
@@ -58,7 +71,7 @@ services:
       - POSTGRES_PASSWORD=sonar
       - POSTGRES_DB=sonar
     volumes:
-      - sonarqube_db_data:/var/lib/postgresql/data
+      - ./sonarqube_db_data:/var/lib/postgresql/data
     restart: always
     networks:
       - app-network
@@ -70,17 +83,16 @@ services:
       - sh
       - -c
       - |
-        while ! curl -s http://frontend-libros/login > /dev/null && curl -s http://localhost:8080/auth/token > /dev/null && curl -s http://localhost:8081/api/libros > /dev/null; do
+        while ! curl -s http://frontend-libros/login > /dev/null && curl -s http://localhost:8080/auth/token > /dev/null && curl -s http://localhost:8082/api/recetas && curl -s http://localhost:8081/api/libros > /dev/null; do
           echo 'Esperando a que microservicio-web-recetas esté listo...'
           sleep 5
         done
         zap.sh -cmd -quickurl http://frontend-libros/login -quickprogress -quickout /zap/wrk/report-web-recetas.html
         zap.sh -cmd -quickurl http://microservicio-tokens:8080/auth/token -quickprogress -quickout /zap/wrk/report-microservicio-tokens.html
         zap.sh -cmd -quickurl http://microservicio-libros:8081/api/libros -quickprogress -quickout /zap/wrk/report-microservicio-libros.html
+        zap.sh -cmd -quickurl http://microservicio-recetas:8082/api/recetas -quickprogress -quickout /zap/wrk/report-microservicio-recetas.html
     volumes:
       - ./zap-reports:/zap/wrk
-    depends_on:
-      - frontend-libros
     networks:
       - app-network
     restart: on-failure
@@ -90,7 +102,4 @@ volumes:
 
 networks:
   app-network:
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.22.0.0/16
+    driver: bridge
