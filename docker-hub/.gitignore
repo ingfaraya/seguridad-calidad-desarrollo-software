@@ -1,5 +1,3 @@
 ### db_data_sonarqube ###
-/sonarqube_db_data/
+/sonarqube_db_data
 
-### VS Code ###
-.vscode/
