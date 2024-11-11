@@ -17,11 +17,11 @@ public class Receta extends RepresentationModel<Receta> {
     private String nombre;
 
     @NotBlank(message = "No puede ingresar ingredientes vacíos")
-    @Column(name = "ingredientes", columnDefinition = "TEXT")
+    @Column(name = "ingredientes")
     private String ingredientes;
 
     @NotBlank(message = "No puede ingresar instrucciones vacías")
-    @Column(name = "instrucciones", columnDefinition = "TEXT")
+    @Column(name = "instrucciones")
     private String instrucciones;
 
     @NotBlank(message = "No puede ingresar un tipo de cocina vacío")
