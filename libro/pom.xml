@@ -117,7 +117,7 @@
 			<plugin>
 				<groupId>org.owasp</groupId>
 				<artifactId>dependency-check-maven</artifactId>
-				<version>6.5.0</version>
+				<version>8.2.1</version>
 				<configuration>
 					<suppressionFiles>
 						<suppressionFile>${project.basedir}/dependency-check-suppression.xml</suppressionFile>
