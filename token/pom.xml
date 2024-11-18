@@ -150,6 +150,18 @@
 			<artifactId>HikariCP</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-core</artifactId>
+			<version>3.1.0</version> <!-- Asegúrate de usar una versión compatible -->
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-data-redis</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+		
+
     </dependencies>
 
 	<build>
@@ -169,6 +181,18 @@
 					</formats>
 					<outputDirectory>${project.build.directory}/dependency-check-report</outputDirectory>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>3.3.4</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
