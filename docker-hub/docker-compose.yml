@@ -12,19 +12,6 @@ services:
     networks:
       - app-network
     restart: on-failure
-  
-  microservicio-libros:
-    container_name: microservicio-libros
-    image: ingfaraya/seguridad-calidad-software-sumativa2-libros:latest
-    ports:
-      - "8081:8081"
-    environment:
-      - spring.datasource.url=jdbc:oracle:thin:@legx51juninivtkl_medium?TNS_ADMIN=/app/oracle_wallet/
-      - spring.datasource.username=admin
-      - spring.datasource.password=Octubre$2024
-    networks:
-      - app-network
-    restart: on-failure
 
   microservicio-recetas:
     container_name: microservicio-recetas
@@ -39,8 +26,8 @@ services:
       - app-network
     restart: on-failure
   
-  frontend-libros:
-    container_name: frontend-libros
+  frontend-recetas:
+    container_name: frontend-recetas
     image: ingfaraya/seguridad-calidad-software-sumativa2-frontend:latest
     ports:
       - "80:80"
@@ -83,13 +70,12 @@ services:
       - sh
       - -c
       - |
-        while ! curl -s http://frontend-libros/login > /dev/null && curl -s http://localhost:8080/auth/token > /dev/null && curl -s http://localhost:8082/api/recetas && curl -s http://localhost:8081/api/libros > /dev/null; do
+        while ! curl -s http://frontend-recetas/login > /dev/null && curl -s http://localhost:8080/auth/token > /dev/null && curl -s http://localhost:8082/api/recetas > /dev/null; do
           echo 'Esperando a que microservicio-web-recetas esté listo...'
           sleep 5
         done
-        zap.sh -cmd -quickurl http://frontend-libros/login -quickprogress -quickout /zap/wrk/report-web-recetas.html
+        zap.sh -cmd -quickurl http://frontend-recetas/login -quickprogress -quickout /zap/wrk/report-web-recetas.html
         zap.sh -cmd -quickurl http://microservicio-tokens:8080/auth/token -quickprogress -quickout /zap/wrk/report-microservicio-tokens.html
-        zap.sh -cmd -quickurl http://microservicio-libros:8081/api/libros -quickprogress -quickout /zap/wrk/report-microservicio-libros.html
         zap.sh -cmd -quickurl http://microservicio-recetas:8082/api/recetas -quickprogress -quickout /zap/wrk/report-microservicio-recetas.html
     volumes:
       - ./zap-reports:/zap/wrk
