@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recetas</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Botón de Cerrar Sesión -->
+        <div class="d-flex justify-content-between">
+            <h1>Recetas</h1>
+            <div>
+                <button id="create-recipe-button" class="btn btn-success mr-3 d-none">Crear Receta</button>
+                <button id="logout-button" class="btn btn-danger">Cerrar Sesión</button>
+            </div>
+        </div>
+
+        <div id="recetas-container" class="row mt-4">
+            <!-- Aquí se cargarán las recetas -->
+        </div>
+        <div class="d-flex justify-content-center mt-4">
+        </div>
+    </div>
+
+    <!-- Modal de Login -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="username">Usuario</label>
+                            <input type="text" class="form-control" id="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Contraseña</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Crear Receta -->
+    <div class="modal fade" id="createRecipeModal" tabindex="-1" role="dialog" aria-labelledby="createRecipeModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createRecipeModalLabel">Crear Receta</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="create-recipe-form">
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="ingredientes">Ingredientes</label>
+                            <textarea class="form-control" id="ingredientes" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="instrucciones">Instrucciones</label>
+                            <textarea class="form-control" id="instrucciones" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="tipoCocina">Tipo de Cocina</label>
+                            <input type="text" class="form-control" id="tipoCocina" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="paisOrigen">País de Origen</label>
+                            <input type="text" class="form-control" id="paisOrigen" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tiempoCoccion">Tiempo de Cocción</label>
+                            <input type="text" class="form-control" id="tiempoCoccion" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="dificultad">Dificultad</label>
+                            <select class="form-control" id="dificultad" required>
+                                <option value="Fácil">Fácil</option>
+                                <option value="Media">Media</option>
+                                <option value="Difícil">Difícil</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block">Crear</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/js/scripts.js"></script>
+</body>
+</html>
