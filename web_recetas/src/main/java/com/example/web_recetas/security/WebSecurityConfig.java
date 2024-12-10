@@ -13,7 +13,6 @@ public class WebSecurityConfig {
         http.csrf().disable()
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/favicon.ico", "/home", "/recetas", "/css/**", "/js/**").permitAll()
-                .requestMatchers("/dashboard").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form

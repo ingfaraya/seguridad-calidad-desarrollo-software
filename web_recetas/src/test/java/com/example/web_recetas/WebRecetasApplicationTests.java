@@ -1,10 +1,10 @@
-package com.example.recetas;
+package com.example.web_recetas;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RecetasApplicationTest {
+class WebRecetasApplicationTests {
 
     @Test
     void contextLoads() {
@@ -15,6 +15,6 @@ class RecetasApplicationTest {
     void testMainMethod() {
         // Ejecutar el método main y verificar que no lanza excepciones
         String[] args = {};
-        RecetasApplication.main(args);
+        WebRecetasApplication.main(args);
     }
 }
