@@ -22,6 +22,6 @@ COPY --from=buildstage /app/target/recetas-0.0.1-SNAPSHOT.jar /app/recetas.jar
 COPY Wallet_LEGX51JUNINIVTKL /app/oracle_wallet
 
 ENV TNS_ADMIN=/app/oracle_wallet
-EXPOSE 8082
+EXPOSE 8081
 
 ENTRYPOINT [ "java", "-jar", "/app/recetas.jar" ]

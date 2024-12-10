@@ -17,7 +17,7 @@ services:
     container_name: microservicio-recetas
     image: ingfaraya/seguridad-calidad-software-sumativa3-recetas:latest
     ports:
-      - "8082:8082"
+      - "8081:8081"
     environment:
       - spring.datasource.url=jdbc:oracle:thin:@legx51juninivtkl_medium?TNS_ADMIN=/app/oracle_wallet/
       - spring.datasource.username=admin
@@ -70,13 +70,13 @@ services:
       - sh
       - -c
       - |
-        while ! curl -s http://frontend-recetas/login > /dev/null && curl -s http://localhost:8080/auth/token > /dev/null && curl -s http://localhost:8082/api/recetas > /dev/null; do
+        while ! curl -s http://frontend-recetas/ > /dev/null && curl -s http://localhost:8080/auth/token > /dev/null && curl -s http://localhost:8081/api/recetas > /dev/null; do
           echo 'Esperando a que microservicio-web-recetas esté listo...'
           sleep 5
         done
-        zap.sh -cmd -quickurl http://frontend-recetas/login -quickprogress -quickout /zap/wrk/report-web-recetas.html
+        zap.sh -cmd -quickurl http://frontend-recetas/ -quickprogress -quickout /zap/wrk/report-web-recetas.html
         zap.sh -cmd -quickurl http://microservicio-tokens:8080/auth/token -quickprogress -quickout /zap/wrk/report-microservicio-tokens.html
-        zap.sh -cmd -quickurl http://microservicio-recetas:8082/api/recetas -quickprogress -quickout /zap/wrk/report-microservicio-recetas.html
+        zap.sh -cmd -quickurl http://microservicio-recetas:8081/api/recetas -quickprogress -quickout /zap/wrk/report-microservicio-recetas.html
     volumes:
       - ./zap-reports:/zap/wrk
     networks:
